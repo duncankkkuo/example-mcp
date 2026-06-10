@@ -17,8 +17,12 @@ from mcp.server.transport_security import TransportSecuritySettings
 # 這台 MCP 跑在 Apigee 後面：JWT 在 Apigee 驗、Cloud Run 也是 --no-allow-unauthenticated
 # 只有 target SA 能打，經過 Apigee 後 Host 會是 Cloud Run 的網域，不在預設清單裡 → 421。
 # 安全性靠 Apigee + Cloud Run IAM，這層 Host 驗證可關。
+# stateless_http=True：不在記憶體保存 session。Cloud Run 會 scale-to-zero／起多個
+# instance，有狀態 session 會在 instance 間遺失 → client 後續請求拿到「Session not found」(404)。
+# 無狀態模式每個請求獨立處理，serverless／負載平衡後面才穩。
 mcp = FastMCP(
     "example-mcp",
+    stateless_http=True,
     transport_security=TransportSecuritySettings(enable_dns_rebinding_protection=False),
 )
 
