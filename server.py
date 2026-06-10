@@ -11,8 +11,16 @@ import uuid
 from datetime import datetime, timezone
 
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 
-mcp = FastMCP("example-mcp")
+# 關掉 MCP SDK 的 DNS-rebinding 保護（預設會擋非 allowed_hosts 的 Host header）。
+# 這台 MCP 跑在 Apigee 後面：JWT 在 Apigee 驗、Cloud Run 也是 --no-allow-unauthenticated
+# 只有 target SA 能打，經過 Apigee 後 Host 會是 Cloud Run 的網域，不在預設清單裡 → 421。
+# 安全性靠 Apigee + Cloud Run IAM，這層 Host 驗證可關。
+mcp = FastMCP(
+    "example-mcp",
+    transport_security=TransportSecuritySettings(enable_dns_rebinding_protection=False),
+)
 
 
 @mcp.tool()
