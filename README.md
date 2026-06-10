@@ -31,4 +31,3 @@ gh repo create kkday/example-mcp --private --source=. --push
 - MCP 名稱：`example-mcp`（小寫英數和 -）
 
 平台會 `gcloud run deploy --source` 直接用這裡的 Dockerfile build。
-# example-mcp
