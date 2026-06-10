@@ -1,0 +1,16 @@
+{
+  "tool_select": [
+    { "prompt": "幫我把這句話前後顛倒：hello", "expect_tool": "reverse_text" },
+    { "prompt": "2 加 3 等於多少？", "expect_tool": "add" },
+    { "prompt": "現在 UTC 時間是幾點？", "expect_tool": "current_time" },
+    { "prompt": "體重 70 公斤、身高 1.75 公尺，幫我算 BMI", "expect_tool": "bmi" },
+    { "prompt": "幫我產生一個隨機的 UUID", "expect_tool": "generate_uuid" }
+  ],
+  "calls": [
+    { "tool": "add", "arguments": { "a": 2, "b": 3 }, "expect": { "no_error": true, "contains": "5" } },
+    { "tool": "divide", "arguments": { "a": 1, "b": 0 }, "expect": { "is_error": true } },
+    { "tool": "reverse_text", "arguments": { "text": "abc" }, "expect": { "contains": "cba" } },
+    { "tool": "word_count", "arguments": { "text": "a b c d" }, "expect": { "no_error": true, "contains": "4" } },
+    { "tool": "celsius_to_fahrenheit", "arguments": { "celsius": 100 }, "expect": { "contains": "212" } }
+  ]
+}
